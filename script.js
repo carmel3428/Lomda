@@ -4,6 +4,7 @@ let answeredCount = 0;
 let answered = false;
 let audioCtx = null;
 let activeGains = [];
+let inTitleScreen = true;
 
 const SOUND_ENABLED = true;
 
@@ -106,6 +107,7 @@ function playIncorrectBuzz() {
 }
 
 function startQuiz() {
+  leaveTitleScreen();
   startScreen.classList.add("hidden");
   quizScreen.classList.remove("hidden");
   currentIndex = 0;
@@ -113,6 +115,21 @@ function startQuiz() {
   answeredCount = 0;
   scoreDisplay.textContent = `0/${QUESTIONS.length}`;
   loadQuestion();
+}
+
+function leaveTitleScreen() {
+  if (inTitleScreen) {
+    history.pushState({ screen: "app" }, "");
+    inTitleScreen = false;
+  }
+}
+
+function goToTitleScreen() {
+  startScreen.classList.remove("hidden");
+  quizScreen.classList.add("hidden");
+  infoScreen.classList.add("hidden");
+  confettiLayer.innerHTML = "";
+  inTitleScreen = true;
 }
 
 function loadQuestion() {
@@ -201,6 +218,7 @@ function nextQuestion() {
 }
 
 function showInfoScreen(fromFinish) {
+  leaveTitleScreen();
   startScreen.classList.add("hidden");
   quizScreen.classList.add("hidden");
   infoScreen.classList.remove("hidden");
@@ -229,10 +247,11 @@ function spawnConfetti() {
 }
 
 function closeInfo() {
-  infoScreen.classList.add("hidden");
-  quizScreen.classList.add("hidden");
-  startScreen.classList.remove("hidden");
-  confettiLayer.innerHTML = "";
+  if (!inTitleScreen) {
+    history.back();
+  } else {
+    goToTitleScreen();
+  }
 }
 
 function renderInfoContent() {
@@ -307,5 +326,6 @@ startBtn.addEventListener("click", startQuiz);
 nextBtn.addEventListener("click", nextQuestion);
 closeInfoBtn.addEventListener("click", closeInfo);
 infoFromStartBtn.addEventListener("click", () => showInfoScreen(false));
+window.addEventListener("popstate", goToTitleScreen);
 
 renderInfoContent();
