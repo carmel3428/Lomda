@@ -1,10 +1,10 @@
 let currentIndex = 0;
 let score = 0;
+let answeredCount = 0;
 let answered = false;
 let audioCtx = null;
 let activeGains = [];
 
-const POINTS_PER_CORRECT = 1000;
 const SOUND_ENABLED = true;
 
 function hexToRgba(hex, alpha) {
@@ -26,6 +26,7 @@ const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const infoScreen = document.getElementById("info-screen");
 
+const questionCard = document.getElementById("question-card");
 const questionText = document.getElementById("question-text");
 const answersList = document.getElementById("answers-list");
 const explanationEl = document.getElementById("explanation");
@@ -41,6 +42,10 @@ const restartBtn = document.getElementById("restart-btn");
 const infoFromStartBtn = document.getElementById("info-from-start-btn");
 
 const CONFETTI_COLORS = ["#FF4D6D", "#FFC53D", "#3DDC97", "#7C5CFF", "#00D9C0"];
+
+const SLIDE_OUT_MS = 250;
+const SLIDE_IN_MS = 300;
+let transitioning = false;
 
 function playCorrectChime() {
   if (!SOUND_ENABLED) return;
@@ -104,7 +109,8 @@ function startQuiz() {
   quizScreen.classList.remove("hidden");
   currentIndex = 0;
   score = 0;
-  scoreDisplay.textContent = "ניקוד: 0";
+  answeredCount = 0;
+  scoreDisplay.textContent = `0/${QUESTIONS.length}`;
   loadQuestion();
 }
 
@@ -146,9 +152,11 @@ function selectAnswer(selectedIndex) {
     }
   });
 
+  answeredCount++;
+  scoreDisplay.textContent = `${answeredCount}/${QUESTIONS.length}`;
+
   if (correct) {
-    score += POINTS_PER_CORRECT;
-    scoreDisplay.textContent = `ניקוד: ${score}`;
+    score++;
     playCorrectChime();
   } else {
     playIncorrectBuzz();
@@ -162,12 +170,33 @@ function selectAnswer(selectedIndex) {
 }
 
 function nextQuestion() {
-  currentIndex++;
-  if (currentIndex >= QUESTIONS.length) {
-    showInfoScreen(true);
-  } else {
+  if (transitioning) return;
+  transitioning = true;
+  questionCard.classList.add("slide-out");
+
+  setTimeout(() => {
+    currentIndex++;
+    questionCard.classList.remove("slide-out");
+
+    if (currentIndex >= QUESTIONS.length) {
+      transitioning = false;
+      showInfoScreen(true);
+      return;
+    }
+
+    questionCard.classList.add("slide-pending");
     loadQuestion();
-  }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        questionCard.classList.remove("slide-pending");
+      });
+    });
+
+    setTimeout(() => {
+      transitioning = false;
+    }, SLIDE_IN_MS);
+  }, SLIDE_OUT_MS);
 }
 
 function showInfoScreen(fromFinish) {
@@ -176,7 +205,7 @@ function showInfoScreen(fromFinish) {
   infoScreen.classList.remove("hidden");
 
   if (fromFinish) {
-    finalScore.textContent = `הניקוד הסופי שלכם: ${score} מתוך ${QUESTIONS.length * POINTS_PER_CORRECT}`;
+    finalScore.textContent = `${score}/${QUESTIONS.length}`;
     finalScore.classList.remove("hidden");
     spawnConfetti();
   } else {
@@ -203,7 +232,8 @@ function restart() {
   quizScreen.classList.remove("hidden");
   currentIndex = 0;
   score = 0;
-  scoreDisplay.textContent = "ניקוד: 0";
+  answeredCount = 0;
+  scoreDisplay.textContent = `0/${QUESTIONS.length}`;
   loadQuestion();
 }
 
