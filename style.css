@@ -151,9 +151,9 @@ body {
 
 .info-gallery {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .info-gallery img {
