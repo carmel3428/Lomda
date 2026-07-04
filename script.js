@@ -39,7 +39,7 @@ const confettiLayer = document.getElementById("confetti-layer");
 const infoDynamic = document.getElementById("info-dynamic");
 
 const startBtn = document.getElementById("start-btn");
-const restartBtn = document.getElementById("restart-btn");
+const closeInfoBtn = document.getElementById("close-info-btn");
 const infoFromStartBtn = document.getElementById("info-from-start-btn");
 
 const CONFETTI_COLORS = ["#FF4D6D", "#FFC53D", "#3DDC97", "#7C5CFF", "#00D9C0"];
@@ -228,14 +228,11 @@ function spawnConfetti() {
   }
 }
 
-function restart() {
+function closeInfo() {
   infoScreen.classList.add("hidden");
-  quizScreen.classList.remove("hidden");
-  currentIndex = 0;
-  score = 0;
-  answeredCount = 0;
-  scoreDisplay.textContent = `0/${QUESTIONS.length}`;
-  loadQuestion();
+  quizScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+  confettiLayer.innerHTML = "";
 }
 
 function renderInfoContent() {
@@ -308,7 +305,7 @@ function renderInfoContent() {
 
 startBtn.addEventListener("click", startQuiz);
 nextBtn.addEventListener("click", nextQuestion);
-restartBtn.addEventListener("click", restart);
+closeInfoBtn.addEventListener("click", closeInfo);
 infoFromStartBtn.addEventListener("click", () => showInfoScreen(false));
 
 renderInfoContent();
