@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיור בסן סימון - צוות 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- Start screen -->
+    <div id="start-screen" class="screen start-screen">
+      <button id="info-from-start-btn" class="info-pill-btn" dir="rtl" aria-label="מידע" title="מידע">
+        <span class="info-pill-icon">i</span>
+        <span>מידע</span>
+      </button>
+      <div class="logo-badge">
+        <img src="assets/team7-logo.png" alt="לוגו צוות 7">
+      </div>
+      <h1 class="title">סיור בסן סימון</h1>
+      <div class="team-pill">צוות 7</div>
+      <p class="subtitle">כמה אתם מכירים? ענו נכון וצברו נקודות</p>
+      <button id="start-btn" class="start-btn" dir="rtl">
+        <span>התחילו</span>
+        <span class="arrow-left"></span>
+      </button>
+    </div>
+
+    <!-- Quiz screen -->
+    <div id="quiz-screen" class="screen quiz-screen hidden">
+      <div class="quiz-header">
+        <div class="quiz-header-left">
+          <div class="logo-badge small">
+            <img src="assets/team7-logo.png" alt="">
+          </div>
+          <span id="progress-display" class="progress-label"></span>
+        </div>
+        <div id="score-display" class="score-pill"></div>
+      </div>
+
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <div id="question-card" class="question-card">
+        <h2 id="question-text" class="question-text"></h2>
+        <div id="answers-list" class="answers-list"></div>
+        <div id="explanation" class="explanation hidden"></div>
+      </div>
+
+      <button id="next-btn" class="next-btn hidden">השאלה הבאה</button>
+    </div>
+
+    <!-- Info screen -->
+    <div id="info-screen" class="screen info-screen hidden">
+      <div id="confetti-layer" class="confetti-layer"></div>
+      <button id="restart-btn" class="corner-btn" aria-label="שחקו שוב" title="שחקו שוב">↻</button>
+
+      <div class="info-scroll">
+        <div class="logo-badge large">
+          <img src="assets/team7-logo.png" alt="">
+        </div>
+        <h2 class="title">סיור בסן סימון</h2>
+        <p id="final-score" class="subtitle hidden"></p>
+
+        <div class="info-block">
+          <div class="info-image">
+            <span>תמונה: נוף כללי של סן סימון</span>
+          </div>
+          <h3 class="info-heading">על הסיור</h3>
+          <p class="info-text">כאן ייכנס תיאור קצר על הסיור בסן סימון — הרקע, המסלול והנקודות המרכזיות שהקבוצה עברה בדרך.</p>
+        </div>
+
+        <div class="info-block">
+          <div class="info-image">
+            <span>תמונה: רגע מהמסע</span>
+          </div>
+          <h3 class="info-heading">צוות 7</h3>
+          <p class="info-text">כאן ייכנס תיאור קצר על צוות 7 — מי השתתף, מה חוו לאורך הדרך ומה למדו.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
