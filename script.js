@@ -36,6 +36,7 @@ const progressDisplay = document.getElementById("progress-display");
 const progressFill = document.getElementById("progress-fill");
 const finalScore = document.getElementById("final-score");
 const confettiLayer = document.getElementById("confetti-layer");
+const infoDynamic = document.getElementById("info-dynamic");
 
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
@@ -237,7 +238,77 @@ function restart() {
   loadQuestion();
 }
 
+function renderInfoContent() {
+  if (!infoDynamic) return;
+
+  INFO_TOPICS.forEach(topic => {
+    const heading = document.createElement("h3");
+    heading.className = "info-heading";
+    heading.textContent = topic.title;
+    infoDynamic.appendChild(heading);
+
+    const block = document.createElement("div");
+    block.className = "info-block";
+
+    const gallery = document.createElement("div");
+    gallery.className = "info-gallery";
+    topic.images.forEach(src => {
+      const img = document.createElement("img");
+      img.src = encodeURI(src);
+      img.alt = topic.title;
+      gallery.appendChild(img);
+    });
+    block.appendChild(gallery);
+
+    topic.paragraphs.forEach(paragraphText => {
+      const text = document.createElement("p");
+      text.className = "info-text";
+      text.textContent = paragraphText;
+      block.appendChild(text);
+    });
+
+    infoDynamic.appendChild(block);
+  });
+
+  const commandersHeading = document.createElement("h2");
+  commandersHeading.className = "section-heading";
+  commandersHeading.textContent = COMMANDERS_TITLE;
+  infoDynamic.appendChild(commandersHeading);
+
+  const grid = document.createElement("div");
+  grid.className = "commanders-grid";
+
+  COMMANDERS.forEach(person => {
+    const card = document.createElement("div");
+    card.className = "commander-card";
+
+    const photo = document.createElement("div");
+    photo.className = "commander-photo";
+    const photoImg = document.createElement("img");
+    photoImg.src = encodeURI(person.image);
+    photoImg.alt = person.name;
+    photo.appendChild(photoImg);
+    card.appendChild(photo);
+
+    const name = document.createElement("h4");
+    name.className = "commander-name";
+    name.textContent = person.name;
+    card.appendChild(name);
+
+    const role = document.createElement("p");
+    role.className = "commander-role";
+    role.textContent = person.role;
+    card.appendChild(role);
+
+    grid.appendChild(card);
+  });
+
+  infoDynamic.appendChild(grid);
+}
+
 startBtn.addEventListener("click", startQuiz);
 nextBtn.addEventListener("click", nextQuestion);
 restartBtn.addEventListener("click", restart);
 infoFromStartBtn.addEventListener("click", () => showInfoScreen(false));
+
+renderInfoContent();
